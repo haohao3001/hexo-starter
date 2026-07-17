@@ -1,6 +1,39 @@
+# ===============================================================
+# Redefine 主题自定义配置
+# ===============================================================
+
+# 1. 基础信息设置
+info:
+  title: Hexo-haohao3001小站 # 您的博客标题
+  author: haohao3001       # 作者名字
+
+# 2. 导航栏菜单
+menu:
+  Home:
+    path: /
+    icon: fa-regular fa-house
+  Archives:
+    path: /archives
+    icon: fa-regular fa-archive
+
+# 3. 页脚设置（实现“最下面写一句 2026 haohao3001”并去掉多余信息）
 footer:
+  enable: true
+  # 建站年份
   since: 2026
+  
+  # 自定义跳动心形图标
   icon:
+    enable: true
     name: fa-solid fa-heart
+    animated: true
+    color: '#ff0000' # 心形颜色（红色）
+  
+  # 版权所有人
   copyright: haohao3001
+  
+  # 是否显示 "Powered by Hexo & Redefine"（设为 false 可获得最干净的页脚）
   powered: true
+  
+  # 是否显示建站时间计时（设为 false 不会显示博客运行了多少天）
+  runtime: false
