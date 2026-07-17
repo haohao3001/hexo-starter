@@ -16,18 +16,14 @@ menu:
     path: /archives
     icon: fa-regular fa-archive
 
-# 3. 页脚设置（实现“最下面写一句 2026 haohao3001”并去掉多余信息）
+# 3. 页脚设置
 footer:
   enable: true
   # 建站年份
   since: 2026
   
   # 自定义跳动心形图标
-  icon:
-    enable: true
-    name: fa-solid fa-heart
-    animated: true
-    color: '#ff0000' # 心形颜色（红色）
+  icon: '<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #ff0000"></i>'
   
   # 版权所有人
   copyright: haohao3001
@@ -37,3 +33,9 @@ footer:
   
   # 是否显示建站时间计时（设为 false 不会显示博客运行了多少天）
   runtime: false
+defaults:
+  # 网站图标 (favicon)
+  favicon: /images/redefine-favicon.svg
+  
+  # 您的头像
+  avatar: 'https://github.com/haohao3001.png'
