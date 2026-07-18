@@ -4,7 +4,7 @@
 
 # 1. 基础信息设置
 info:
-  title: Hexo-haohao3001小站 # 您的博客标题
+  title: Hexo-haohao3001的小站 # 您的博客标题
   author: haohao3001       # 作者名字
 
 # 2. 导航栏菜单
@@ -23,7 +23,7 @@ footer:
   since: 2026
   
   # 自定义跳动心形图标
-  icon: '<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #ff0000"></i>'
+  icon: ''
   
   # 版权所有人
   copyright: haohao3001

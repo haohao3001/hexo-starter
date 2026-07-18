@@ -10,7 +10,7 @@ title: '为REDMI K90 ProMax适配OrangeFox'
 
 ---
 
-## 1.寻找现成的轮子(适配前的准备工作)
+## 1.适配前的准备工作
 拿到设备后当然不可能是从零开始造轮子的(这太累了说是)
 
 ### 1.1认识设备的参数
@@ -43,9 +43,9 @@ Disk: 120G可用(至少预留90G)
 ## 3.踩坑记录
 
 ### 3.1 实现解密Data
-高通方案下，需要用到`qseecomd` `hlosminkdaemon`这两个文件极其配套的service配置文件`qseecomd.rc` `hlosminkdaemon.rc`，都可以在vendor里找到的  
-对于这两个文件依赖的库，可以通过`readelf -d your/program | grep NEEDED`查看  
-高版本Android还需要在BoardConfig.mk中设置(TW_INCLUDE_OMAPI := true)  
+高通方案下，需要用到`qseecomd` `hlosminkdaemon`这两个文件及其配套的service配置文件`qseecomd.rc` `hlosminkdaemon.rc`，都可以在vendor里找到的，
+对于这两个文件依赖的库，可以通过`readelf -d your/program | grep NEEDED`查看，
+高版本Android还需要在BoardConfig.mk中设置`TW_INCLUDE_OMAPI := true`  
 (当时找了好久原因说是，最后还是在翻看OnePlus 15的设备树时发现的)
 
 ### 3.2 震动
@@ -57,18 +57,18 @@ Disk: 120G可用(至少预留90G)
 这里我猜测一下原理应该是gbl root canoe只处理了比对哈希的部分，没有处理用公钥解密尾部的AVB信息这一步，公钥解密失败就直接拒绝引导内核了  
 解决方法也很简单，把官方的recovery的AVB尾部移植过去即可，这里可以用[我的脚本](https://github.com/haohao3001/android_device_xiaomi_myron/blob/main/transplanting_vbmeta.py)  
 
-### 3.4 卡在Fastboot了怎么办
-这个时候千万不要说去擦除efisp，降级/升级abl，xbl，不然成砖了都没得哭的，还会被群主设为精华(不是)  
-把损坏的上层分区(HLOS)(通常是recovery分区里的文件损坏)重刷回官方镜像，然后在官方的fastboot里执行`fastboot set_active a`重置计数器  
+### 3.4 卡在Fastboot
+这个时候千万不要去擦除efisp，降级/升级abl，xbl，不然成砖了都没得哭的，还会被群主设为精华(不是)  
+把损坏的上层分区(HLOS)(通常是recovery分区里的文件损坏)重刷回官方镜像，然后在官方的fastboot里执行`fastboot set_active a`重置计数器，
 最后执行`fastboot reboot`或`fastboot continue`即可  
 **千万不要在superfastboot里执行set_active**  
 **千万不要在superfastboot里执行set_active**  
 **千万不要在superfastboot里执行set_active**  
 **不然直接喜提黑砖**
 
-### 3.5 MTP没得用
-某些情况下把TWRP的二进制搬到OrangeFox后会导致MTP没得用的问题，这不是BoardConfig.mk也不是二进制文件的问题  
-是`init.recovery.usb.rc`和`system/etc/init/hw/init.rc`同时实现了USB控制器   
+### 3.5 MTP不可用
+某些情况下把TWRP的二进制搬到OrangeFox后会导致MTP不可用的问题，这不是BoardConfig.mk也不是二进制文件的问题，
+是`init.recovery.usb.rc`和`system/etc/init/hw/init.rc`同时实现了USB控制器，
 以及重复导入`init.recovery.usb.rc`(init.rc和init.recovery.qcom.rc都申明了`import /init.recovery.usb.rc`)导致的  
-把删除了USB逻辑的`init.rc`放在`system/etc/init/hw/`覆盖掉自动生成的`init.rc`，然后检查一下有没有重复导入`init.recovery.usb.rc`的情况  
-最后重新编译即可(可增量编译的)
+把删除了USB控制逻辑的`init.rc`放在`system/etc/init/hw/`下，覆盖掉自动生成的`init.rc`，然后检查一下有没有重复导入`init.recovery.usb.rc`的情况  
+最后重新编译即可(可增量编译)
